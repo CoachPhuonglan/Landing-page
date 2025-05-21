@@ -1,0 +1,253 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hạnh Phúc Trong Tâm Tay - Khóa Học Tái Khám Phá Bản Thân</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #e0f7fa, #b3e5fc);
+      font-family: 'Arial', sans-serif;
+      position: relative;
+    }
+    .floral-pattern {
+      background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+      opacity: 0.4;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-size: 200px;
+    }
+    .section {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 1rem;
+      padding: 2rem;
+      margin: 1rem 0;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      border: 1px solid #e0f7fa;
+    }
+    .cta-button {
+      background: #0288d1;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .cta-button:hover {
+      background: #0277bd;
+    }
+    .illustration {
+      max-width: 100%;
+      border-radius: 0.5rem;
+    }
+    .qr-code {
+      max-width: 150px;
+      margin: 1rem auto;
+    }
+    .form-input {
+      border: 1px solid #b3e5fc;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #0288d1;
+      box-shadow: 0 0 5px rgba(2, 136, 209, 0.5);
+    }
+  </style>
+</head>
+<body class="relative">
+  <div class="floral-pattern"></div>
+  <header class="text-center py-10">
+    <h1 class="text-4xl md:text-5xl font-bold text-[#01579b]">Hạnh Phúc Trong Tâm Tay</h1>
+    <p class="text-lg md:text-xl text-[#0288d1] mt-4">Mỗi ngày là một cơ hội để khám phá và yêu thương chính mình</p>
+    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hành trình khám phá bản thân" class="illustration mx-auto mt-6 max-w-[200px] md:max-w-[300px]">
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4">
+    <!-- Tiêu đề chính và phụ -->
+    <section class="section text-center">
+      <h2 class="text-3xl font-semibold text-[#01579b]">Khám Phá Sức Mạnh Tiềm Ẩn</h2>
+      <p class="text-lg text-gray-700 mt-2">Hành trình tìm lại bản thân bắt đầu từ đây</p>
+      <h2 class="text-3xl font-semibold text-[#01579b] mt-6">Chữa Lành Vết Thương Tâm Hồn</h2>
+      <p class="text-lg text-gray-700 mt-2">Giải phóng bản thân khỏi những ám ảnh tội lỗi</p>
+      <h2 class="text-3xl font-semibold text-[#01579b] mt-6">Sống Tự Do, Trọn Vẹn</h2>
+      <p class="text-lg text-gray-700 mt-2">Xây dựng cuộc đời ý nghĩa với sự tự tin và hạnh phúc</p>
+    </section>
+
+    <!-- Vấn đề và giải pháp -->
+    <section class="section">
+      <h2 class="text-2xl font-semibold text-[#01579b] mb-4">Bạn Đang Đối Mặt Với Gì?</h2>
+      <p class="text-gray-700">Trong cuộc sống hối hả, bạn có từng cảm thấy:</p>
+      <ul class="list-disc list-inside text-gray-700 mt-2">
+        <li><strong>Mất kết nối với chính mình</strong>, không biết mình thực sự muốn gì?</li>
+        <li><strong>Ám ảnh bởi cảm giác tội lỗi</strong>, bị thao túng bởi những mối quan hệ độc hại?</li>
+        <li><strong>Kiệt sức vì cố gắng làm hài lòng người khác</strong>, nhưng vẫn cảm thấy trống rỗng?</li>
+      </ul>
+      <p class="text-gray-700 mt-4 font-bold">Nỗi đau lớn nhất: Sống một cuộc đời không phải của mình, bị kẹt trong vòng xoáy của sự thao túng và tự nghi ngờ.</p>
+      <img src="https://images.unsplash.com/photo-1484100356142-db0b9e02f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Suy ngẫm về bản thân" class="illustration mt-6 mx-auto max-w-sm">
+      <h3 class="text-xl font-semibold text-[#0288d1] mt-6">Giải Pháp Từ "Hạnh Phúc Trong Tâm Tay"</h3>
+      <p class="text-gray-700 mt-2">Khóa học sẽ giúp bạn:</p>
+      <ul class="list-disc list-inside text-gray-700 mt-2">
+        <li>Nhận diện và thoát khỏi sự thao túng cảm xúc.</li>
+        <li>Chữa lành những vết thương tâm hồn từ quá khứ.</li>
+        <li>Tái định hình cuộc sống với sự tự tin và ý nghĩa.</li>
+      </ul>
+    </section>
+
+    <!-- Câu chuyện trước và sau -->
+    <section class="section">
+      <h2 class="text-2xl font-semibold text-[#01579b] mb-4
+
+">Hành Trình Tìm Lại Bản Thân</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <h3 class="text-xl font-semibold text-[#0288d1]">Trước Khi Tham Gia</h3>
+          <p class="text-gray-700 mt-2">Lan, một nhân viên văn phòng 30 tuổi, luôn cảm thấy cuộc sống của mình thiếu ý nghĩa. Cô bị ám ảnh bởi cảm giác tội lỗi khi từ chối yêu cầu của người khác, dẫn đến kiệt sức và mất niềm tin vào bản thân.</p>
+        </div>
+        <div>
+          <h3 class="text-xl font-semibold text-[#0288d1]">Sau Khi Tham Gia</h3>
+          <p class="text-gray-700 mt-2">Sau khóa học, Lan học cách nhận diện sự thao túng cảm xúc và đặt ranh giới lành mạnh. Cô tìm thấy niềm vui trong việc sống đúng với giá trị của mình, tự tin hơn và xây dựng được những mối quan hệ tích cực.</p>
+        </div>
+      </div>
+      <img src="https://images.unsplash.com/photo-1528712306091-ed0763094c31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sống tự do và hạnh phúc" class="illustration mt-6 mx-auto max-w-sm">
+    </section>
+
+    <!-- Ưu điểm và lợi ích -->
+    <section class="section">
+      <h2 class="text-2xl font-semibold text-[#01579b] mb-4">Tại Sao Chọn "Hạnh Phúc Trong Tâm Tay"?</h2>
+      <ul class="list-disc list-inside text-gray-700">
+        <li><strong>Hành trình cá nhân hóa:</strong> Các bài tập và câu hỏi suy ngẫm được thiết kế để phù hợp với trải nghiệm của bạn.</li>
+        <li><strong>Phương pháp thực tiễn:</strong> Chiến lược bảo vệ bản thân khỏi thao túng cảm xúc, áp dụng ngay trong cuộc sống.</li>
+        <li><strong>Cộng đồng hỗ trợ:</strong> Kết nối với những người cùng chí hướng qua nhóm Zalo, nơi bạn không bao giờ đơn độc.</li>
+        <li><strong>Chữa lành sâu sắc:</strong> Khám phá và giải phóng những vết thương cũ, mở ra sức mạnh tiềm ẩn bên trong bạn.</li>
+      </ul>
+    </section>
+
+    <!-- Mô tả sản phẩm -->
+    <section class="section text-center">
+      <h2 class="text-2xl font-semibold text-[#01579b] mb-4">Mỗi Ngày Là Một Cơ Hội Mới</h2>
+      <p class="text-gray-700">Khóa học "Hạnh Phúc Trong Tâm Tay" là một hành trình chữa lành và khám phá bản thân, nơi bạn sẽ:</p>
+      <ul class="list-disc list-inside text-gray-700 mt-2 mx-auto max-w-lg">
+        <li>Tham gia các buổi trò chuyện sâu sắc, khơi dậy nhận thức về bản thân.</li>
+        <li>Thực hành các bài tập giúp bạn nhận diện cảm xúc và thiết lập ranh giới lành mạnh.</li>
+        <li>Khám phá những bí mật ẩn sâu trong tâm hồn, tái định hình cuộc sống của bạn.</li>
+      </ul>
+      <p class="text-gray-700 mt-4">Hãy bắt đầu hành trình để sống tự do, trọn vẹn, và hạnh phúc hơn mỗi ngày!</p>
+    </section>
+
+    <!-- Form đăng ký trực tiếp -->
+    <section class="section text-center">
+      <h2 class="text-2xl font-semibold text-[#01579b] mb-4">Đăng Ký Ngay Hôm Nay</h2>
+      <p class="text-gray-700 mb-6">Hãy điền thông tin để bắt đầu hành trình khám phá bản thân!</p>
+      <form action="/submit" method="POST" class="max-w-md mx-auto">
+        <input type="text" name="name" placeholder="Họ và tên" class="form-input" required>
+        <input type="email" name="email" placeholder="Email" class="form-input" required>
+        <input type="tel" name="phone" placeholder="Số điện thoại" class="form-input" required>
+        <button type="submit" class="cta-button w-full">Gửi Đăng Ký</button>
+      </form>
+    </section>
+
+    <!-- Xử lý lý do từ chối -->
+    <section class="section">
+      <h2 class="text-2xl font-semibold text-[#01579b] mb-4">Bạn Đang Do Dự?</h2>
+      <div class="space-y-4">
+        <div>
+          <p class="font-semibold text-gray-700">"Tôi không có thời gian."</p>
+          <p class="text-gray-700">Khóa học được thiết kế linh hoạt, bạn có thể học theo tốc độ của riêng mình, chỉ cần 30 phút mỗi ngày.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-gray-700">"Tôi không chắc nó có hiệu quả với mình."</p>
+          <p class="text-gray-700">Hàng trăm học viên đã thay đổi cuộc sống nhờ khóa học. Bạn chỉ cần cam kết với chính mình để thấy sự khác biệt.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-gray-700">"Tôi sợ đối diện với cảm xúc của mình."</p>
+          <p class="text-gray-700">Chúng tôi sẽ đồng hành cùng bạn qua từng bước, với sự hỗ trợ từ cộng đồng và những bài tập nhẹ nhàng, an toàn.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quà tặng và lời chứng thực -->
+    <section class="section">
+      <h2 class="text-2xl font-semibold text-[#01579b] mb-4">Quà Tặng Đặc Biệt & Lời Chứng Thực</h2>
+      <h3 class="text-xl font-semibold text-[#0288d1]">Quà Tặng Dành Cho Bạn</h3>
+      <p class="text-gray-700 mt-2">Đăng ký hôm nay, bạn sẽ nhận được:</p>
+      <ul class="list-disc list-inside text-gray-700 mt-2">
+        <li>E-book "5 Bước Thoát Khỏi Thao Túng Cảm Xúc" trị giá 199.000 VNĐ.</li>
+        <li>1 buổi coaching 1:1 miễn phí với chuyên gia tâm lý.</li>
+      </ul>
+      <h3 class="text-xl font-semibold text-[#0288d1] mt-6">Học Viên Nói Gì?</h3>
+      <div class="mt-4 space-y-4">
+        <blockquote class="text-gray-700 italic">
+          "Khóa học đã giúp tôi nhận ra giá trị của bản thân và thoát khỏi cảm giác tội lỗi. Tôi chưa bao giờ cảm thấy tự do như thế này!" - <strong>Hương, 28 tuổi</strong>
+        </blockquote>
+        <blockquote class="text-gray-700 italic">
+          "Những bài tập thực hành thật sự thay đổi cách tôi nhìn nhận cuộc sống. Tôi đã tìm thấy niềm vui trong những điều nhỏ bé." - <strong>Minh, 35 tuổi</strong>
+        </blockquote>
+      </div>
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hạnh phúc và tự do" class="illustration mt-6 mx-auto max-w-sm">
+    </section>
+
+    <!-- CTA cuối với QR code cho Zalo -->
+    <section class="text-center py-10">
+      <h2 class="text-3xl font-semibold text-[#01579b] mb-4">Kết Nối Với Cộng Đồng</h2>
+      <p class="text-lg text-gray-700 mb-6">Tham gia nhóm Zalo để kết nối với những người cùng chí hướng!</p>
+      <div class="flex justify-center items-center">
+        <div>
+          <a href="https://zalo.me/g/cqptlq083" class="cta-button">Tham Gia Nhóm Zalo</a>
+          <img src="https://chart.googleapis.com/chart?cht=qr&chl=https%3A%2F%2Fzalo.me%2Fg%2Fcqptlq083&chs=150x150" alt="QR code for Zalo group" class="qr-code">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-center py-6 text-gray-600">
+    <p>© 2025 Hạnh Phúc Trong Tâm Tay. All rights reserved.</p>
+  </footer>
+</body>
+</html>
